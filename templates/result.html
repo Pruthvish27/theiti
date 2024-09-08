@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itinerary Result</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container { margin-top: 30px; }
+        .btn-custom { background-color: #007BFF; color: white; }
+        .btn-custom:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Your Itinerary</h1>
+        <p><strong>Starting City:</strong> {{ starting_city }}</p>
+        <p><strong>Destination:</strong> {{ destination }}</p>
+        <p><strong>Nights:</strong> {{ nights }}</p>
+        <p><strong>Persons:</strong> {{ persons }}</p>
+        <p><strong>Start Date:</strong> {{ start_date }}</p>
+        <h3>Itinerary</h3>
+        <p>{{ itinerary|safe }}</p>
+        <h3>Food Recommendations</h3>
+        <p>{{ food_recommendations }}</p>
+        <h3>Estimated Budget</h3>
+        <p>₹{{ budget }}</p>
+    </div>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Itinerary Builder</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container { margin-top: 30px; }
+        .btn-custom { background-color: #007BFF; color: white; }
+        .btn-custom:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">AI Itinerary Builder</h1>
+        <form id="itineraryForm">
+            <div class="form-group">
+                <label for="starting_city">Starting City</label>
+                <select class="form-control" id="starting_city" name="starting_city" required>
+                    <option value="Ahmedabad">Ahmedabad</option>
+                    <option value="Surat">Surat</option>
+                    <option value="Vadodara">Vadodara</option>
+                    <option value="Rajkot">Rajkot</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="destination">Destination</label>
+                <select class="form-control" id="destination" name="destination" required>
+                    <option value="Gir">Gir</option>
+                    <option value="Somnath">Somnath</option>
+                    <option value="Vadodara">Vadodara</option>
+                    <option value="Ahmedabad">Ahmedabad</option>
+                    <option value="Surat">Surat</option>
+                    <option value="Rajkot">Rajkot</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="nights">Number of Nights</label>
+                <input type="number" class="form-control" id="nights" name="nights" required>
+            </div>
+            <div class="form-group">
+                <label for="persons">Number of Persons</label>
+                <input type="number" class="form-control" id="persons" name="persons" required>
+            </div>
+            <div class="form-group">
+                <label for="start_date">Start Date and Time</label>
+                <input type="datetime-local" class="form-control" id="start_date" name="start_date" required>
+            </div>
+            <div class="form-group">
+                <label for="budget_usd">Budget (INR)</label>
+                <input type="number" class="form-control" id="budget_usd" name="budget_usd" required>
+            </div>
+            <button type="button" class="btn btn-custom" onclick="generateItinerary()">Generate Itinerary</button>
+        </form>
+        <div id="result" class="mt-4"></div>
+    </div>
+
+    <script>
+        function generateItinerary() {
+            const formData = new FormData(document.getElementById('itineraryForm'));
+            const data = {};
+            formData.forEach((value, key) => { data[key] = value; });
+            
+            fetch('/generate_itinerary', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('result').innerHTML = `<p class="text-danger">${data.error}</p>`;
+                } else {
+                    const resultHtml = `
+                        <h2>Your Itinerary</h2>
+                        <p><strong>Starting City:</strong> ${data.starting_city}</p>
+                        <p><strong>Destination:</strong> ${data.destination}</p>
+                        <p><strong>Number of Nights:</strong> ${data.nights}</p>
+                        <p><strong>Number of Persons:</strong> ${data.persons}</p>
+                        <p><strong>Start Date and Time:</strong> ${data.start_date}</p>
+                        <p><strong>Budget (INR):</strong> ₹${data.budget_usd}</p>
+                        <p><strong>Travel Options:</strong> ${data.travel_options}</p>
+                        <p><strong>Accommodation Options:</strong> ${data.accommodation_options}</p>
+                        <h3>Itinerary:</h3>
+                        <p>${data.itinerary}</p>
+                        <h3>Food Recommendations:</h3>
+                        <p>${data.food_recommendations}</p>
+                    `;
+                    document.getElementById('result').innerHTML = resultHtml;
+                }
+            });
+        }
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
